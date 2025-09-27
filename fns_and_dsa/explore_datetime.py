@@ -10,4 +10,5 @@ def calculate_future_date(number_of_days):
     from datetime import datetime, timedelta
     current_date = datetime.now()
     future_date = current_date + timedelta(days=number_of_days)
-    print(f"Date after adding {number_of_days} days: {future_date}")
+    print(f"Future date: {future_date}")
+
