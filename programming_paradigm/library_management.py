@@ -7,6 +7,8 @@ class Book:
     def __str__(self):
         status = "Checked out" if self.is_checked_out else "Available"
         return f"{self.title} by {self.author} - {status}"
+
+
 class Library:
     def __init__(self):
         self.books = []
@@ -27,7 +29,9 @@ class Library:
                 return
         print(f"Sorry, '{title}' is not available.")
 
-    def return_book(self, title):
+    # ✅ Fixed version of return_book
+    def return_book(self):
+        title = input("Enter the title of the book to return: ")
         for book in self.books:
             if book.title == title and book.is_checked_out:
                 book.is_checked_out = False
