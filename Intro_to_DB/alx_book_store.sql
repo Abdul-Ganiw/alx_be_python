@@ -1,31 +1,47 @@
-import mysql.connector
-from mysql.connector import Error
+-- Create the database
+CREATE DATABASE IF NOT EXISTS alx_book_store;
 
-def create_database():
-    try:
-        # Connect to MySQL Server
-        connection = mysql.connector.connect(
-            host='localhost',
-            user='root',        # change to your MySQL username
-            password='yourpassword'  # change to your MySQL password
-        )
+-- Use the database
+USE alx_book_store;
 
-        if connection.is_connected():
-            cursor = connection.cursor()
-            # Create database if it does not exist
-            cursor.execute("CREATE DATABASE IF NOT EXISTS alx_book_store")
-            print("Database 'alx_book_store' created successfully!")
+-- Create Authors table
+CREATE TABLE IF NOT EXISTS Authors (
+    author_id INT AUTO_INCREMENT PRIMARY KEY,
+    author_name VARCHAR(215) NOT NULL
+);
 
-    except Error as e:
-        print(f"Error while connecting to MySQL: {e}")
+-- Create Books table
+CREATE TABLE IF NOT EXISTS Books (
+    book_id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(130) NOT NULL,
+    author_id INT,
+    price DOUBLE,
+    publication_date DATE,
+    FOREIGN KEY (author_id) REFERENCES Authors(author_id)
+);
 
-    finally:
-        # Close the database connection
-        if connection.is_connected():
-            cursor.close()
-            connection.close()
-            # Uncomment below to see confirmation of closure
-            # print("MySQL connection is closed")
+-- Create Customers table
+CREATE TABLE IF NOT EXISTS Customers (
+    customer_id INT AUTO_INCREMENT PRIMARY KEY,
+    customer_name VARCHAR(215) NOT NULL,
+    email VARCHAR(215),
+    address TEXT
+);
 
-if __name__ == "__main__":
-    create_database()
+-- Create Orders table
+CREATE TABLE IF NOT EXISTS Orders (
+    order_id INT AUTO_INCREMENT PRIMARY KEY,
+    customer_id INT,
+    order_date DATE,
+    FOREIGN KEY (customer_id) REFERENCES Customers(customer_id)
+);
+
+-- Create Order_Details table
+CREATE TABLE IF NOT EXISTS Order_Details (
+    orderdetailid INT AUTO_INCREMENT PRIMARY KEY,
+    order_id INT,
+    book_id INT,
+    quantity DOUBLE,
+    FOREIGN KEY (order_id) REFERENCES Orders(order_id),
+    FOREIGN KEY (book_id) REFERENCES Books(book_id)
+);
